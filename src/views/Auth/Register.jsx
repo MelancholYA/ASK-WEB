@@ -2,14 +2,10 @@ import { TextField, Grid, Container, Button, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
-import { usePost } from "../../hooks/useFetch";
+import { useFetch } from "../../hooks/useFetch";
 
 const Register = () => {
-  const User = usePost({
-    path: "users/new",
-    query: "user",
-    successMessage: "welcome",
-  });
+  const { clearData, postData, data, isLoading } = useFetch();
 
   const {
     handleChange,
@@ -29,9 +25,18 @@ const Register = () => {
       firstName: Yup.string().required(),
       lastName: Yup.string().required(),
     }),
-    onSubmit: async (values) => {
-      await User.mutate.mutateAsync(values);
+    onSubmit: (values) => {
+      postData({ path: "users/new", payload: values });
     },
+  });
+
+  useEffect(() => {
+    if (data) {
+      localStorage.setItem("userData", JSON.stringify(data));
+    }
+    return () => {
+      clearData();
+    };
   });
 
   return (

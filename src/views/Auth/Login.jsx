@@ -1,28 +1,15 @@
 import { TextField, Grid, Container, Button, Typography } from "@mui/material";
 
-import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
 
-import { usePost } from "../../hooks/useFetch";
+import { useFetch } from "../../hooks/useFetch";
 
 const Login = () => {
-  const User = usePost({
-    path: "users/login",
-    query: "user",
-    successMessage: "welcome",
-  });
+  const { postData, isLoading, data, clearData } = useFetch();
 
-  const { data, isLoading, isError, isSuccess, error } = User.mutate;
-  const {
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    isValid,
-    values,
-    errors,
-    touched,
-  } = useFormik({
+  const { handleChange, handleSubmit, values, errors, touched } = useFormik({
     initialValues: { password: "", email: "" },
     validationSchema: Yup.object({
       password: Yup.string().required("Name is required"),
@@ -30,14 +17,21 @@ const Login = () => {
         .email("Invalid email address")
         .required("email is required"),
     }),
-    onSubmit: async (values) => {
-      await User.mutate.mutateAsync(values);
+    onSubmit: (values) => {
+      console.log({ values });
+      postData({ path: "users/login", payload: values });
     },
   });
 
   useEffect(() => {
-    console.log({ data, isLoading, isError, isSuccess, error });
+    if (data) {
+      localStorage.setItem("userData", JSON.stringify(data));
+    }
+    return () => {
+      clearData();
+    };
   }, [data]);
+
   return (
     <Container sx={{ p: 2 }} align="center">
       <Typography variant="h3" sx={{ mb: 3 }}>
@@ -78,9 +72,9 @@ const Login = () => {
           sx={{ marginTop: 2 }}
           fullWidth
           variant="contained"
-          disabled={isSubmitting || !isValid}
+          disabled={isLoading}
         >
-          {isSubmitting ? "SUBMITING..." : "SUBMIT"}
+          {isLoading ? "SUBMITING..." : "SUBMIT"}
         </Button>
       </form>
     </Container>
