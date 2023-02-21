@@ -1,4 +1,4 @@
-import { TextField, Grid, Container, Button } from "@mui/material";
+import { TextField, Grid, Container, Button, Typography } from "@mui/material";
 
 import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
 import React, { useEffect } from "react";
@@ -40,7 +40,9 @@ const Login = () => {
   }, [data]);
   return (
     <Container sx={{ p: 2 }} align="center">
-      {/* <Typo */}
+      <Typography variant="h3" sx={{ mb: 3 }}>
+        Welcome Back
+      </Typography>
 
       <form onSubmit={handleSubmit}>
         <Grid container spacing={4}>

@@ -1,9 +1,7 @@
-import { TextField, Grid, Container, Button } from "@mui/material";
-
-import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
+import { TextField, Grid, Container, Button, Typography } from "@mui/material";
+import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
-
 import { usePost } from "../../hooks/useFetch";
 
 const Register = () => {
@@ -13,7 +11,6 @@ const Register = () => {
     successMessage: "welcome",
   });
 
-  const { data, isLoading, isError, isSuccess, error } = User.mutate;
   const {
     handleChange,
     handleSubmit,
@@ -37,12 +34,9 @@ const Register = () => {
     },
   });
 
-  useEffect(() => {
-    console.log({ data, isLoading, isError, isSuccess, error });
-  }, [data]);
   return (
     <Container sx={{ p: 2 }} align="center">
-      {/* <Typo */}
+      <Typography variant="h3">Welcome Abroad</Typography>
 
       <form onSubmit={handleSubmit}>
         <Grid container spacing={4}>
