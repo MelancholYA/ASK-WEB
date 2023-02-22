@@ -30,7 +30,11 @@ const useFetch = () => {
       const response = await axios.post(baseUrl + path, payload);
       setData(response.data);
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: "error" });
+      console.log({ error });
+      const errorbody = error.response
+        ? error.response.data.message
+        : error.message;
+      enqueueSnackbar(errorbody, { variant: "error" });
     } finally {
       setIsLoading(false);
     }

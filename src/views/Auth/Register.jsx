@@ -1,11 +1,15 @@
 import { TextField, Grid, Container, Button, Typography } from "@mui/material";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import * as Yup from "yup";
+import { UserContext } from "../../context/userContext";
 import { useFetch } from "../../hooks/useFetch";
+import { useStorage } from "../../hooks/useStorage";
 
 const Register = () => {
   const { clearData, postData, data, isLoading } = useFetch();
+  const { saveStorageData } = useStorage();
+  const { setUserData } = useContext(UserContext);
 
   const {
     handleChange,
@@ -32,7 +36,8 @@ const Register = () => {
 
   useEffect(() => {
     if (data) {
-      localStorage.setItem("userData", JSON.stringify(data));
+      setUserData(data);
+      saveStorageData({ key: "askUserData", data });
     }
     return () => {
       clearData();
@@ -41,7 +46,7 @@ const Register = () => {
 
   return (
     <Container sx={{ p: 2 }} align="center">
-      <Typography variant="h3">Welcome Abroad</Typography>
+      <Typography variant="h3">Welcome Aboard</Typography>
 
       <form onSubmit={handleSubmit}>
         <Grid container spacing={4}>

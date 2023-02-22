@@ -1,13 +1,17 @@
 import { TextField, Grid, Container, Button, Typography } from "@mui/material";
 
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import * as Yup from "yup";
 
 import { useFetch } from "../../hooks/useFetch";
+import { useStorage } from "../../hooks/useStorage";
+import { UserContext } from "../../context/userContext";
 
 const Login = () => {
   const { postData, isLoading, data, clearData } = useFetch();
+  const { saveStorageData } = useStorage();
+  const { setUserData } = useContext(UserContext);
 
   const { handleChange, handleSubmit, values, errors, touched } = useFormik({
     initialValues: { password: "", email: "" },
@@ -18,14 +22,14 @@ const Login = () => {
         .required("email is required"),
     }),
     onSubmit: (values) => {
-      console.log({ values });
       postData({ path: "users/login", payload: values });
     },
   });
 
   useEffect(() => {
     if (data) {
-      localStorage.setItem("userData", JSON.stringify(data));
+      setUserData(data);
+      saveStorageData({ key: "askUserData", data });
     }
     return () => {
       clearData();
