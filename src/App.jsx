@@ -1,34 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { SnackbarProvider } from "notistack";
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { UserContextProvider } from "./context/userContext";
+import { router } from "./routes";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  console.log("hi");
+  const queryClient = new QueryClient();
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+    <SnackbarProvider>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <UserContextProvider>
+          <RouterProvider router={router} />
+        </UserContextProvider>
+      </QueryClientProvider>
+    </SnackbarProvider>
+  );
+};
 
-export default App
+export default App;

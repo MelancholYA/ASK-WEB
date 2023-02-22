@@ -1,0 +1,48 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+.authToggleContainer {
+  width: max-content !important;
+  background-color: rgb(176, 176, 176);
+  border-radius: 50vw;
+  position: relative;
+  padding: 5px;
+  z-index: 1;
+  margin-block: 15px;
+  margin-bottom: 15px;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: calc(100% + 5px);
+    width: 110px;
+    background: #8d8d8d;
+    z-index: -1;
+    border-radius: 50vw;
+    transition: 1000ms cubic-bezier(0.45, -0.16, 0.52, 1.22);
+  }
+  &_button {
+    all: unset !important;
+    width: 100px !important;
+    cursor: pointer !important;
+    color: white !important;
+    &_active {
+      color: red !important;
+    }
+  }
+}
+.moveRight {
+  &::after {
+    left: calc(100% - 110px);
+  }
+}
