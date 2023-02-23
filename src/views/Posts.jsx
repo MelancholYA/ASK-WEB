@@ -44,7 +44,7 @@ const Posts = () => {
       </>
 
       <NewPost />
-      <Grid container spacing={0}>
+      <Grid container spacing={[0, 0]}>
         <Grid item xs={2}>
           <PostsSideBar filter={filter} setFilter={setFilter} />
         </Grid>
@@ -52,13 +52,14 @@ const Posts = () => {
           item
           container
           xs={10}
+          wrap="wrap"
           sx={{
-            justifyContent: "space-around",
-            alignItems: "flex-start",
-            height: "fitContent",
+            height: "fit-content",
+            justifyContent: "space-between",
             maxHeight: "100vh",
             overflow: "auto",
           }}
+          rowSpacing={0}
         >
           {posts.map((post) => (
             <Post postData={post} setFilter={setFilter} />

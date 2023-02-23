@@ -10,7 +10,7 @@ const Navbar = ({ data }) => {
       alignItems="center"
       sx={{
         boxShadow: "0  3px 14px #80808048",
-        backgroundColor: "#fff7c6",
+        backgroundColor: "#e0e1fc31",
         position: "sticky",
         top: 0,
         paddingInline: 2,
