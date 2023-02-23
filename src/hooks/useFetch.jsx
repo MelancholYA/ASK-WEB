@@ -2,8 +2,6 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 
-const baseUrl = "http://localhost:5000/api/";
-
 const useFetch = () => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -13,8 +11,7 @@ const useFetch = () => {
   const getData = async ({ path }) => {
     setIsLoading(true);
     try {
-      const response = await axios.get(baseUrl + path);
-
+      const response = await axios.get(import.meta.env.VITE_APP_API_URL + path);
       setData(response.data);
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: "error" });
@@ -27,10 +24,13 @@ const useFetch = () => {
     console.log("hh");
     setIsLoading(true);
     try {
-      const response = await axios.post(baseUrl + path, payload);
+      const response = await axios.post(
+        import.meta.env.VITE_APP_API_URL + path,
+        payload
+      );
       setData(response.data);
     } catch (error) {
-      console.log({ error });
+      console.log(error);
       const errorbody = error.response
         ? error.response.data.message
         : error.message;

@@ -5,10 +5,19 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { UserContextProvider } from "./context/userContext";
 import { router } from "./routes";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
 const App = () => {
-  console.log("hi");
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 0,
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
+  library.add(fas);
 
   return (
     <SnackbarProvider>

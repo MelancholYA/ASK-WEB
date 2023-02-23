@@ -1,6 +1,7 @@
 import { TextField, Grid, Container, Button, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { UserContext } from "../../context/userContext";
 import { useFetch } from "../../hooks/useFetch";
@@ -10,6 +11,7 @@ const Register = () => {
   const { clearData, postData, data, isLoading } = useFetch();
   const { saveStorageData } = useStorage();
   const { setUserData } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const {
     handleChange,
@@ -38,6 +40,7 @@ const Register = () => {
     if (data) {
       setUserData(data);
       saveStorageData({ key: "askUserData", data });
+      navigate({ pathname: "/" });
     }
     return () => {
       clearData();

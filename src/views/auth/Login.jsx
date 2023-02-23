@@ -7,11 +7,13 @@ import * as Yup from "yup";
 import { useFetch } from "../../hooks/useFetch";
 import { useStorage } from "../../hooks/useStorage";
 import { UserContext } from "../../context/userContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { postData, isLoading, data, clearData } = useFetch();
   const { saveStorageData } = useStorage();
   const { setUserData } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const { handleChange, handleSubmit, values, errors, touched } = useFormik({
     initialValues: { password: "", email: "" },
@@ -30,6 +32,8 @@ const Login = () => {
     if (data) {
       setUserData(data);
       saveStorageData({ key: "askUserData", data });
+
+      navigate({ pathname: "/" });
     }
     return () => {
       clearData();

@@ -11,7 +11,7 @@ const Index = () => {
   const { userData } = useContext(UserContext);
 
   return userData ? (
-    <Navigate to="/posts" replace />
+    <Navigate to="/" replace />
   ) : (
     <Container>
       <Container align="center">
