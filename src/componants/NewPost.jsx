@@ -86,6 +86,7 @@ const NewPost = () => {
           >
             {filters.map((filter) => (
               <Chip
+                key={filter}
                 onClick={() => setPost((prev) => ({ ...prev, label: filter }))}
                 clickable
                 variant={filter === post.label ? "outlined" : "filled"}

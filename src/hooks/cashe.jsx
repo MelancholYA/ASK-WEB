@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useContext } from "react";
@@ -51,4 +56,25 @@ const usePost = ({ path, query, successMessage }) => {
   });
 };
 
-export { useGet, usePost };
+const useInfinite = ({ path, query }) => {
+  const { userData } = useContext(UserContext);
+  return useInfiniteQuery({
+    queryKey: [query],
+    queryFn: ({ pageParam = 1 }) =>
+      axios
+        .get(import.meta.env.VITE_APP_API_URL + path + pageParam, {
+          headers: { "x-auth-token": userData.token },
+        })
+        .then((res) => {
+          return res.data.posts;
+        }),
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length === 0) {
+        return undefined;
+      }
+      return allPages.length;
+    },
+  });
+};
+
+export { useGet, usePost, useInfinite };

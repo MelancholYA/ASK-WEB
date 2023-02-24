@@ -10,11 +10,12 @@ const Navbar = ({ data }) => {
       alignItems="center"
       sx={{
         boxShadow: "0  3px 14px #80808048",
-        backgroundColor: "#e0e1fc31",
+        backgroundColor: "#e0e1fc",
         position: "sticky",
         top: 0,
         paddingInline: 2,
         height: 60,
+        zIndex: 99,
       }}
     >
       <Grid item xs={12} md lg alignItems="center">
