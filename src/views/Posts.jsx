@@ -32,7 +32,6 @@ const Posts = () => {
     if (isFetchingNextPage || isFetching) {
       return;
     }
-    console.log("scrolling...");
     const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
     if (scrollTop + clientHeight >= scrollHeight) {
       fetchNextPage();
@@ -42,9 +41,11 @@ const Posts = () => {
   useEffect(() => {
     if (data?.pages) {
       if (!filter) {
-        setPages(data.pages);
+        setPages(data.pages.flat());
       } else {
-        setPages(data.pages.filter((post) => post.chip.label === filter));
+        setPages(
+          data.pages.flat().filter((post) => post.chip.label === filter)
+        );
       }
     }
 
@@ -74,7 +75,7 @@ const Posts = () => {
         >
           <Backdrop
             sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={true}
+            open={isFetching}
           >
             <LinearProgress
               sx={{ position: "absolute", width: "100%", top: 0 }}
@@ -89,11 +90,9 @@ const Posts = () => {
             }}
             rowSpacing={0}
           >
-            {pages.map((page) =>
-              page.map((post) => (
-                <Post key={post._id} postData={post} setFilter={setFilter} />
-              ))
-            )}
+            {pages.map((post) => (
+              <Post key={post._id} postData={post} setFilter={setFilter} />
+            ))}
           </Grid>
           <Typography textAlign="center" variant="h6">
             {hasNextPage ? isFetchingNextPage && "Loading..." : "No more data"}

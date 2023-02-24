@@ -11,10 +11,34 @@ import {
   TextField,
   InputBase,
 } from "@mui/material";
+import { useSnackbar } from "notistack";
 
-import React from "react";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../context/userContext";
+import { usePost } from "../hooks/cashe";
 
 const Post = ({ postData, setFilter }) => {
+  const [answerBody, setAnswerBody] = useState("");
+  const { mutate } = usePost({
+    path: "posts/answer",
+    queries: ["answers", "posts"],
+  });
+  const { enqueueSnackbar } = useSnackbar();
+  const { userData } = useContext(UserContext);
+
+  const handleSubmit = () => {
+    if (!answerBody) {
+      enqueueSnackbar("Please write your answer first", { variant: "error" });
+      return;
+    }
+    mutate({
+      userId: userData.user._id,
+      body: answerBody,
+      postId: postData._id,
+    });
+    setAnswerBody("");
+  };
+
   return (
     <Grid item md={6} xs={12} sx={{ p: 1 }}>
       <div
@@ -97,10 +121,13 @@ const Post = ({ postData, setFilter }) => {
             }}
           >
             <InputBase
+              value={answerBody}
+              onSubmit={handleSubmit}
+              onChange={(e) => setAnswerBody(e.target.value)}
               placeholder="Answer the question"
               sx={{ paddingInline: 1 }}
             />
-            <IconButton>
+            <IconButton onClick={handleSubmit}>
               <FontAwesomeIcon color="#2D3F7B" icon="fa-solid fa-reply" />{" "}
             </IconButton>
           </Stack>
