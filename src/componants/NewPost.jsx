@@ -26,7 +26,7 @@ const NewPost = () => {
   const { mutate, isLoading, isSuccess } = usePost({
     path: "posts/new",
     payload: post,
-    query: "posts",
+    queries: ["posts"],
     successMessage: "Post created Succesfully",
   });
 

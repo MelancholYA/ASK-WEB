@@ -47,14 +47,7 @@ const usePost = ({ path, queries, successMessage }) => {
       });
     },
     onSuccess: () => {
-      s;
-      if (Array.isArray(queries)) {
-        queries.map((query) =>
-          queryClient.invalidateQueries({ queryKey: [query] })
-        );
-      } else {
-        queryClient.invalidateQueries({ queryKey: [queries] });
-      }
+      queryClient.invalidateQueries({ queryKey: [...queries] });
       if (successMessage) {
         enqueueSnackbar(successMessage, {
           variant: "success",

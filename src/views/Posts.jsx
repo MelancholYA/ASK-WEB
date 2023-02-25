@@ -16,7 +16,6 @@ import { useGet, useInfinite } from "../hooks/cashe";
 const Posts = () => {
   const [filter, setFilter] = useState(null);
   const [pages, setPages] = useState([]);
-  console.log("home page");
   const {
     data,
     status,
@@ -24,16 +23,16 @@ const Posts = () => {
     isFetching,
     isFetchingNextPage,
     hasNextPage,
+    isRefetching,
   } = useInfinite({
     path: "posts/",
     query: "posts",
   });
   const handleScroll = (event) => {
-    if (isFetchingNextPage || isFetching) {
-      return;
-    }
     const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
-    if (scrollTop + clientHeight >= scrollHeight) {
+    const isAtTheEnd = scrollTop + clientHeight >= scrollHeight;
+    const isActiveNetwork = isFetchingNextPage || isFetching || isRefetching;
+    if (isAtTheEnd && !isActiveNetwork) {
       fetchNextPage();
     }
   };
@@ -54,8 +53,9 @@ const Posts = () => {
     };
   }, [filter, data]);
 
-  if (status === "loading") return <h1>Loading...</h1>;
+  if (status === "loading") return <LinearProgress />;
   if (status === "error") return <h1>Something went wrong</h1>;
+  console.log(status);
   return (
     <>
       <NewPost />
@@ -70,15 +70,20 @@ const Posts = () => {
           sx={{
             maxHeight: "calc(100vh - 60px)",
             overflow: "auto",
-            position: "relative",
           }}
         >
           <Backdrop
-            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={isFetching}
+            sx={{
+              zIndex: (theme) => theme.zIndex.drawer + 1,
+            }}
+            open={isFetchingNextPage}
           >
             <LinearProgress
-              sx={{ position: "absolute", width: "100%", top: 0 }}
+              sx={{
+                position: "absolute",
+                top: 0,
+                width: "100%",
+              }}
             />
           </Backdrop>
           <Grid
@@ -95,7 +100,7 @@ const Posts = () => {
             ))}
           </Grid>
           <Typography textAlign="center" variant="h6">
-            {hasNextPage ? isFetchingNextPage && "Loading..." : "No more data"}
+            {!hasNextPage && "No more data"}
           </Typography>
         </Grid>
       </Grid>

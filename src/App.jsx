@@ -8,7 +8,7 @@ import { router } from "./routes";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 
-//todo get why infinite query is double fetching and add view comments feature
+//todo  add view comments feature
 
 const App = () => {
   const queryClient = new QueryClient({
