@@ -1,4 +1,4 @@
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 
 export const filters = ["General", "Tech", "Romance", "Babies"];
@@ -24,6 +24,16 @@ const PostsSideBar = ({ filter, setFilter }) => {
         top: 60,
       }}
     >
+      <Typography variant="h6" sx={{ mb: 1 }}>
+        Filters :{" "}
+      </Typography>
+      <Button
+        key={"all"}
+        variant={!filter ? "contained" : "outlined"}
+        onClick={() => handleClick(null)}
+      >
+        All
+      </Button>
       {filters.map((filterLabel, i) => (
         <Button
           key={i}
