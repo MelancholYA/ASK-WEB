@@ -8,14 +8,13 @@ import { router } from "./routes";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 
-//todo  add view comments feature
-
 const App = () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         retry: 0,
         refetchOnWindowFocus: false,
+        refetchOnMount: false,
       },
     },
   });

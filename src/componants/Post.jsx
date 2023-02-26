@@ -2,14 +2,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Avatar,
   Chip,
-  Container,
   Divider,
   Grid,
   Stack,
   Typography,
   IconButton,
-  TextField,
   InputBase,
+  LinearProgress,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 
@@ -20,9 +19,9 @@ import Answers from "./Answers";
 
 const Post = ({ postData, setFilter }) => {
   const [answerBody, setAnswerBody] = useState("");
-  const { mutate } = usePost({
+  const { mutate, isLoading } = usePost({
     path: "posts/answer",
-    queries: ["answers", "posts"],
+    queries: ["posts", `answers/${postData._id}`],
   });
   const { enqueueSnackbar } = useSnackbar();
   const { userData } = useContext(UserContext);
@@ -103,7 +102,7 @@ const Post = ({ postData, setFilter }) => {
         <Typography variant="body2" p={2}>
           {postData.body}
         </Typography>
-
+        {isLoading && <LinearProgress open={isLoading}></LinearProgress>}
         {/* post footer */}
         <Stack
           direction="row"

@@ -47,7 +47,12 @@ const usePost = ({ path, queries, successMessage }) => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [...queries] });
+      queries.map((query) =>
+        queryClient.refetchQueries({
+          queryKey: [query],
+        })
+      );
+
       if (successMessage) {
         enqueueSnackbar(successMessage, {
           variant: "success",
