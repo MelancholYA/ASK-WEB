@@ -5,7 +5,6 @@ export const filters = ["General", "Tech", "Romance", "Babies"];
 
 const PostsSideBar = ({ filter, setFilter }) => {
   const handleClick = (filterLabel) => {
-    console.log(filterLabel, filter);
     if (filterLabel === filter) {
       setFilter(null);
     } else {

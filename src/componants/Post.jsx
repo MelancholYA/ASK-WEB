@@ -16,6 +16,7 @@ import { useSnackbar } from "notistack";
 import React, { useContext, useState } from "react";
 import { UserContext } from "../context/userContext";
 import { usePost } from "../hooks/cashe";
+import Answers from "./Answers";
 
 const Post = ({ postData, setFilter }) => {
   const [answerBody, setAnswerBody] = useState("");
@@ -25,6 +26,7 @@ const Post = ({ postData, setFilter }) => {
   });
   const { enqueueSnackbar } = useSnackbar();
   const { userData } = useContext(UserContext);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = () => {
     if (!answerBody) {
@@ -39,8 +41,16 @@ const Post = ({ postData, setFilter }) => {
     setAnswerBody("");
   };
 
+  const openModel = () => {
+    setIsOpen(true);
+  };
+
   return (
     <Grid item md={6} xs={12} sx={{ p: 1 }}>
+      {isOpen && (
+        <Answers postId={postData._id} handleClose={() => setIsOpen(false)} />
+      )}
+
       <div
         style={{
           boxShadow: "1px 1px 14px gainsboro",
@@ -104,7 +114,7 @@ const Post = ({ postData, setFilter }) => {
             borderRadius: 2,
           }}
         >
-          <IconButton>
+          <IconButton onClick={openModel}>
             <FontAwesomeIcon color="#2D3F7B" icon="fa-solid fa-comment-dots" />
           </IconButton>
           <IconButton>
@@ -131,7 +141,9 @@ const Post = ({ postData, setFilter }) => {
               <FontAwesomeIcon color="#2D3F7B" icon="fa-solid fa-reply" />{" "}
             </IconButton>
           </Stack>
-          <Typography>{postData.answersLength} answers</Typography>
+          <Typography sx={{ cursor: "pointer" }} onClick={openModel}>
+            {postData.answersLength} answers
+          </Typography>
         </Stack>
       </div>
     </Grid>

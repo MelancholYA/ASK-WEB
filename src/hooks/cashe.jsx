@@ -68,14 +68,9 @@ const useInfinite = ({ path, query }) => {
           headers: { "x-auth-token": userData.token },
         })
         .then((res) => {
-          return res.data.posts;
+          return res.data;
         }),
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length === 0) {
-        return undefined;
-      }
-      return allPages.length;
-    },
+    getNextPageParam: (lastPage, allPages) => allPages.length,
   });
 };
 

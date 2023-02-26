@@ -22,29 +22,28 @@ const Posts = () => {
     fetchNextPage,
     isFetching,
     isFetchingNextPage,
-    hasNextPage,
     isRefetching,
   } = useInfinite({
     path: "posts/",
     query: "posts",
   });
+  const hasNextPage = data?.pages[data?.pages.length - 1].hasNextPage;
   const handleScroll = (event) => {
     const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
     const isAtTheEnd = scrollTop + clientHeight >= scrollHeight;
     const isActiveNetwork = isFetchingNextPage || isFetching || isRefetching;
-    if (isAtTheEnd && !isActiveNetwork) {
+    if (isAtTheEnd && !isActiveNetwork && hasNextPage) {
       fetchNextPage();
     }
   };
 
   useEffect(() => {
     if (data?.pages) {
+      const postsArr = data.pages.map((page) => page.posts).flat();
       if (!filter) {
-        setPages(data.pages.flat());
+        setPages(postsArr);
       } else {
-        setPages(
-          data.pages.flat().filter((post) => post.chip.label === filter)
-        );
+        setPages(postsArr.filter((post) => post.chip.label === filter));
       }
     }
 
@@ -55,7 +54,6 @@ const Posts = () => {
 
   if (status === "loading") return <LinearProgress />;
   if (status === "error") return <h1>Something went wrong</h1>;
-  console.log(status);
   return (
     <>
       <NewPost />
